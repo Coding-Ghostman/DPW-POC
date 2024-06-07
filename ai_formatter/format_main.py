@@ -88,6 +88,7 @@ def format_changer(
     requested_delivery_date, need_identification_date, actual_or_estimated
 ):
     formatter_ = formatter()
+    error_status = False
     formatter_data = formatter_.run_query()
     # formatter = [('Jan 05 2023', 'December 2022', 'USD 950,000'), ('02/01/23', 'January 2024', 'USD 38,250')]
     # print(actual_or_estimated)
