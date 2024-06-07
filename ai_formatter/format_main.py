@@ -103,32 +103,40 @@ def format_changer(
         data_dict["actual_or_estimated"].append(i[2])
 
     if requested_delivery_date:
-        old_dates_similarity_requested_delivery_dates = date_format_processor(
-            data_dict["requested_delivery_date"][0],
-            data_dict["requested_delivery_date"][1],
-        )
-        if old_dates_similarity_requested_delivery_dates["format"].upper() == "YES":
-            date_similarity_check = date_format_processor(
-                data_dict["requested_delivery_date"][0], requested_delivery_date
+        try:
+            old_dates_similarity_requested_delivery_dates = date_format_processor(
+                data_dict["requested_delivery_date"][0],
+                data_dict["requested_delivery_date"][1],
             )
-            if date_similarity_check["format"].upper() == "NO":
-                requested_delivery_date = date_format_convertor(
-                    requested_delivery_date, data_dict["requested_delivery_date"][0]
-                )["format"]
+            if old_dates_similarity_requested_delivery_dates["format"].upper() == "YES":
+                date_similarity_check = date_format_processor(
+                    data_dict["requested_delivery_date"][0], requested_delivery_date
+                )
+                if date_similarity_check["format"].upper() == "NO":
+                    requested_delivery_date = date_format_convertor(
+                        requested_delivery_date, data_dict["requested_delivery_date"][0]
+                    )["format"]
+        except Exception as e:
+            error_status = True
+            print(e)
 
     if need_identification_date:
-        old_dates_similarity_need_identification_date = date_format_processor(
-            data_dict["need_identification_date"][0],
-            data_dict["need_identification_date"][1],
-        )
-        if old_dates_similarity_need_identification_date["format"].upper() == "YES":
-            date_similarity_check = date_format_processor(
-                data_dict["need_identification_date"][0], need_identification_date
+        try:
+            old_dates_similarity_need_identification_date = date_format_processor(
+                data_dict["need_identification_date"][0],
+                data_dict["need_identification_date"][1],
             )
-            if date_similarity_check["format"].upper() == "NO":
-                need_identification_date = date_format_convertor(
-                    need_identification_date, data_dict["need_identification_date"][0]
-                )["format"]
+            if old_dates_similarity_need_identification_date["format"].upper() == "YES":
+                date_similarity_check = date_format_processor(
+                    data_dict["need_identification_date"][0], need_identification_date
+                )
+                if date_similarity_check["format"].upper() == "NO":
+                    need_identification_date = date_format_convertor(
+                        need_identification_date, data_dict["need_identification_date"][0]
+                    )["format"]
+        except Exception as e:
+            error_status = True
+            print(e)
 
     if actual_or_estimated:
         try:
@@ -176,6 +184,7 @@ def format_changer(
     
                     actual_or_estimated = final_value
         except Exception as e:
+            error_status = True
             print(e)
 
-    return requested_delivery_date, need_identification_date, actual_or_estimated
+    return requested_delivery_date, need_identification_date, actual_or_estimated, error_status
