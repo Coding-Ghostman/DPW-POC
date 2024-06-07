@@ -131,48 +131,51 @@ def format_changer(
                 )["format"]
 
     if actual_or_estimated:
-        actual_or_estimated_num_list = actual_or_estimated.split()
-        final_actual_or_estimated_list = []
-        for value in actual_or_estimated_num_list:
-            print(value)
-            type_, currency = separate_currency(value)
-            if type_ == "list":
-                final_actual_or_estimated_list.append(currency[0])
-                final_actual_or_estimated_list.append(currency[1])
-            elif type_ == "value":
-                final_actual_or_estimated_list.append(currency)
-            else:
-                final_actual_or_estimated_list.append(value)
-
-        actual_or_estimated_num_value = float(
-            [num for num in final_actual_or_estimated_list if is_number(num)][0]
-        )
-        old_currency_similarity = currency_format_check(
-            data_dict["actual_or_estimated"][0], data_dict["actual_or_estimated"][1]
-        )
-        if old_currency_similarity["same"].upper() == "YES":
-            currency_similarity = currency_format_check(
-                actual_or_estimated, data_dict["actual_or_estimated"][0]
+        try:
+            actual_or_estimated_num_list = actual_or_estimated.split()
+            final_actual_or_estimated_list = []
+            for value in actual_or_estimated_num_list:
+                print(value)
+                type_, currency = separate_currency(value)
+                if type_ == "list":
+                    final_actual_or_estimated_list.append(currency[0])
+                    final_actual_or_estimated_list.append(currency[1])
+                elif type_ == "value":
+                    final_actual_or_estimated_list.append(currency)
+                else:
+                    final_actual_or_estimated_list.append(value)
+    
+            actual_or_estimated_num_value = float(
+                [num for num in final_actual_or_estimated_list if is_number(num)][0]
             )
-            if currency_similarity["same"].upper() == "NO":
-                actual_or_estimated_dict = currency_get_format(
+            old_currency_similarity = currency_format_check(
+                data_dict["actual_or_estimated"][0], data_dict["actual_or_estimated"][1]
+            )
+            if old_currency_similarity["same"].upper() == "YES":
+                currency_similarity = currency_format_check(
                     actual_or_estimated, data_dict["actual_or_estimated"][0]
                 )
-                actual_or_estimated = y = "{:.2f}".format(
-                    currency_exchange(
-                        actual_or_estimated_dict["currency1"],
-                        actual_or_estimated_dict["currency2"],
-                        actual_or_estimated_num_value,
+                if currency_similarity["same"].upper() == "NO":
+                    actual_or_estimated_dict = currency_get_format(
+                        actual_or_estimated, data_dict["actual_or_estimated"][0]
                     )
-                )
-                final_value = ""
-                format_list = data_dict["actual_or_estimated"][0].split()
-                for i in format_list:
-                    if any(char.isdigit() for char in i):
-                        final_value += str(actual_or_estimated) + " "
-                        continue
-                    final_value += i + " "
-
-                actual_or_estimated = final_value
+                    actual_or_estimated = y = "{:.2f}".format(
+                        currency_exchange(
+                            actual_or_estimated_dict["currency1"],
+                            actual_or_estimated_dict["currency2"],
+                            actual_or_estimated_num_value,
+                        )
+                    )
+                    final_value = ""
+                    format_list = data_dict["actual_or_estimated"][0].split()
+                    for i in format_list:
+                        if any(char.isdigit() for char in i):
+                            final_value += str(actual_or_estimated) + " "
+                            continue
+                        final_value += i + " "
+    
+                    actual_or_estimated = final_value
+        except Exception as e:
+            print(e)
 
     return requested_delivery_date, need_identification_date, actual_or_estimated
