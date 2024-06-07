@@ -54,7 +54,7 @@ class formatter:
 
 def separate_currency(input_string):
     # Remove punctuation except dots and commas
-    pattern_punct = r'[^\w\s\.,]'
+    pattern_punct = r'[^\w\s\.]'
     cleaned_string = re.sub(pattern_punct, '', input_string, flags=re.MULTILINE)
 
     # Match currency code and amount (allowing dots and commas in the amount)
