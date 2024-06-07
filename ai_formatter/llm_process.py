@@ -89,6 +89,8 @@ def date_format_convertor(date_, format_):
 
             Date to be formatted: {date_}
             Format Date: {format_}
+
+            In case you find ambiguities and are confused with the way the data is given, most of it is in dd/mm/yy format
             
             SO basically change the format of {date_} to the format of {format_}. Do not copy the dates of {format_}
 
@@ -96,6 +98,8 @@ def date_format_convertor(date_, format_):
 
             JSON format:
             "format" : <new_date_format>
+
+            
 
             Always return a single string only dont return any list, in case a list is there add all elements as strings and return SINGLE STRING ONLY
             
