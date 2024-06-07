@@ -97,6 +97,8 @@ def date_format_convertor(date_, format_):
             JSON format:
             "format" : <new_date_format>
 
+            Always return a single string only dont return any list, in case a list is there add all elements as strings and return SINGLE STRING ONLY
+            
             Provide the answer in the above JSON format nothing else is required""",
             ),
         ]
