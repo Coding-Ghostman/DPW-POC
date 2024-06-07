@@ -37,19 +37,28 @@ def change_data():
     data = request.json
     try:
         print(type(data))
-        requested_delivery_date, need_identification_date, actual_or_estimated = (
+        requested_delivery_date, need_identification_date, actual_or_estimated, error_status = (
             format_changer(
                 data["requested_delivery_date"],
                 data["need_identification_date"],
                 data["actual_or_estimated"],
             )
         )
-        return {
-            "requested_delivery_date": requested_delivery_date,
-            "need_identification_date": need_identification_date,
-            "actual_or_estimated": data["actual_or_estimated"] ,
-            "updated_actual_or_estimated": actual_or_estimated,
-        }
+        if not error_status:
+            return {
+                "requested_delivery_date": requested_delivery_date,
+                "need_identification_date": need_identification_date,
+                "actual_or_estimated": data["actual_or_estimated"] ,
+                "updated_actual_or_estimated": actual_or_estimated,
+            }
+        else:
+            return {
+                "requested_delivery_date": requested_delivery_date,
+                "need_identification_date": need_identification_date,
+                "actual_or_estimated": data["actual_or_estimated"] ,
+                "updated_actual_or_estimated": actual_or_estimated,
+                "error" : "Invalid data recieved",
+            }
     except Exception as e:
         print(e)
         response = make_response(jsonify({"warning": "Issue a proper format please"}), 400)
