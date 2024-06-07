@@ -52,18 +52,19 @@ class formatter:
             print(f"Error: {e}")
             return ""
 
-
 def separate_currency(input_string):
-    # Remove punctuation except dots
-    pattern_punct = r"[^\w\s\.]"
-    cleaned_string = re.sub(pattern_punct, "", input_string, flags=re.MULTILINE)
+    # Remove punctuation except dots and commas
+    pattern_punct = r'[^\w\s\.,]'
+    cleaned_string = re.sub(pattern_punct, '', input_string, flags=re.MULTILINE)
 
-    # Match currency code and amount (allowing dots in the amount)
-    pattern = r"^(\D+)(\d+(?:\.\d+)*)$"
+    # Match currency code and amount (allowing dots and commas in the amount)
+    # This pattern expects the currency code to be non-numeric characters, and amount to be numeric with possible commas and dots
+    pattern = r'([\d,]+\.\d+|[\d,]+)(\D+)$'
     match = re.match(pattern, cleaned_string)
+    
     if match:
-        currency_code = match.group(1)
-        currency_amount = match.group(2).replace(".", "")
+        currency_amount = match.group(1).replace(',', '')  # Remove commas from the amount
+        currency_code = match.group(2)
         return "list", [currency_code, currency_amount]
     elif cleaned_string:
         return "value", cleaned_string
